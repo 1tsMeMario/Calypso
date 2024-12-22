@@ -20,15 +20,12 @@ namespace offsets
     uintptr_t m_bSpottedByMask = 0;
 }
 
-uintptr_t readOffset(const std::string& name, const std::string& struct_name, const std::string& path) 
+uintptr_t readOffset(const std::string& name, const std::string& struct_name, const std::string& path)
 {
     std::ifstream file(path);
-    if (!file.is_open()) 
+    if (!file.is_open())
     {
-        Log("[-]", "Failed to open offsets file: " + path, RED);
-        Log("[!]", "Please open offsets_update.py and restart cheat.", YELLOW);
-        system("pause");
-        exit(1);
+
     }
 
     std::string line;
@@ -37,11 +34,11 @@ uintptr_t readOffset(const std::string& name, const std::string& struct_name, co
 
     bool structFinded = false;
 
-    while (std::getline(file, line)) 
+    while (std::getline(file, line))
     {
         if (line.empty())
             continue;
-        if (!structFinded) 
+        if (!structFinded)
         {
             temp = line.find(struct_name + "\": {");
             if (temp == std::string::npos)
@@ -81,7 +78,7 @@ uintptr_t readOffset(const std::string& name, const std::string& struct_name, co
     return result;
 }
 
-bool readOffsets() 
+bool readOffsets()
 {
     offsets::dwEntityList = readOffset("dwEntityList", "client.dll", "offsets/offsets.json");
     offsets::dwLocalPlayerPawn = readOffset("dwLocalPlayerPawn", "client.dll", "offsets/offsets.json");
@@ -94,7 +91,7 @@ bool readOffsets()
     offsets::m_vecOrigin = readOffset("m_vecOrigin", "CGameSceneNode", "offsets/client.dll.json");
     offsets::m_vOldOrigin = readOffset("m_vOldOrigin", "C_BasePlayerPawn", "offsets/client.dll.json");
     offsets::m_pGameSceneNode = readOffset("m_pGameSceneNode", "C_BaseEntity", "offsets/client.dll.json");
-    
+
 
     offsets::m_entitySpottedState = readOffset("m_entitySpottedState", "C_CSPlayerPawn", "offsets/client.dll.json");
     offsets::m_bSpottedByMask = readOffset("m_bSpottedByMask", "EntitySpottedState_t", "offsets/client.dll.json");
@@ -102,7 +99,18 @@ bool readOffsets()
     if (offsets::dwEntityList == 0 || offsets::dwLocalPlayerPawn == 0 || offsets::dwViewMatrix == 0 ||
         offsets::m_iIDEntIndex == 0 || offsets::m_hPlayerPawn == 0 || offsets::m_iTeamNum == 0 ||
         offsets::m_iHealth == 0 || offsets::m_vecOrigin == 0 || offsets::m_pGameSceneNode == 0)
-        return false;
+    {
+        if (utils::updater::updateOffsets())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
     else
+    {
         return true;
+    }
 }

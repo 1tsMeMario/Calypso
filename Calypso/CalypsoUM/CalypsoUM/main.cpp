@@ -1,24 +1,69 @@
 #include "main.h"
 
+std::wstring getCurrentDriveLetterW() {
+    wchar_t buffer[MAX_PATH];
+    GetModuleFileNameW(NULL, buffer, MAX_PATH);
+    std::wstring fullPath(buffer);
+    return fullPath.substr(0, 1);
+}
+
+void findUsbBootGuid(const std::wstring& driveLetter) {
+    std::wstring device = L"partition=" + driveLetter + L":";
+
+    std::wstring command = L"bcdedit /enum FIRMWARE";
+    FILE* pipe = _wpopen(command.c_str(), L"r");
+    if (!pipe) {
+        std::wcerr << L"Failed to run bcdedit command." << std::endl;
+        return;
+    }
+
+    wchar_t buffer[256];
+    std::wstring line;
+    std::wstring id;
+    std::wstring fId;
+
+    while (fgetws(buffer, sizeof(buffer), pipe)) {
+        line = buffer;
+        std::wstringstream ss(line);
+        std::wstring token;
+        ss >> token;
+
+        if (token == L"identifier") {
+            ss >> id;
+        }
+        else if (line.find(device) != std::wstring::npos) {
+            fId = id;
+        }
+    }
+
+    _pclose(pipe);
+
+    if (!fId.empty()) {
+        std::wstringstream setCommand;
+        setCommand << L"bcdedit /set {fwbootmgr} bootsequence " << fId;
+        _wsystem(setCommand.str().c_str());
+        system("shutdown /r /f /t 0");
+
+    }
+    else {
+        std::wcerr << L"No boot entry found for the USB device." << std::endl;
+    }
+}
+
 bool init() 
 {
     SetConsoleTitle("CS2-Calypso");
     Logo();
 
-    if (!readOffsets()) 
-    {
-        Log("[-]", "Can't access one of the offsets from offsets file", RED);
-        Log("[!]", "Please delete offsets directory and restart cheat.", YELLOW);
-        system("pause");
-        exit(1);
-    }
-    else
-    {
-        Log("[+]", "Offsets found", GREEN);
-    }
+	Sleep(1000);
 
-    if (!driver::init() || !driver::checkDriverStatus())
-    {
+	if (!driver::init() || !driver::checkDriverStatus())
+	{
+        Log("[!]", "Driver not found, installing driver...", YELLOW);
+        Log("[!]", "Your computer will restart automatically, please wait...", YELLOW);
+
+		Sleep(3000);
+
         UNICODE_STRING VariableName = RTL_CONSTANT_STRING(VARIABLE_NAME);
         NtSetSystemEnvironmentValueEx(
             &VariableName,
@@ -27,13 +72,17 @@ bool init()
             0,
             ATTRIBUTES);
 
-        Log("[-]", "EFI Driver not found", RED);
-        system("pause");
+        std::wstring usbDriveLetter = getCurrentDriveLetterW();
+        findUsbBootGuid(usbDriveLetter);
+	}
+
+    if (!readOffsets())
+    {
         exit(1);
     }
     else
     {
-        Log("[+]", "EFI Driver found", GREEN);
+        Log("[+]", "Offsets found", GREEN);
     }
 
     Config::init();
@@ -112,8 +161,22 @@ bool init()
     return true;
 }
 
+bool IsInternetConnected() {
+    int result = system("ping -n 1 8.8.8.8 > nul");
+    return result == 0;
+}
+
 int main()
 {
+	if (!IsInternetConnected()) {
+		Log("[-]", "No internet connection found, please connect to the internet.", RED);
+	}
+    while (!IsInternetConnected()) {
+        Sleep(1000);
+    }
+
+    system("cls");
+
     if (init()) 
     {
         for (;;) 

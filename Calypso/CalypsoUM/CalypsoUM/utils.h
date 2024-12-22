@@ -47,4 +47,9 @@ namespace utils
 		void printl();
 		void printc(const char* prefix, const std::string& text, WORD color);
 	}
+
+	namespace updater
+	{
+		bool updateOffsets();
+	}
 }

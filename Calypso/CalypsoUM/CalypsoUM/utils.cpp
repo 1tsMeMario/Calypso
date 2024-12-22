@@ -257,3 +257,84 @@ void utils::output::printc(const char* prefix, const std::string& text, WORD col
 
     printf("%s\n", text.c_str());
 }
+
+namespace fs = std::filesystem;
+
+std::string fetch_raw_data(const std::string& url) {
+    HINTERNET hInternet, hConnect;
+    DWORD bytesRead;
+    char buffer[4096];
+    std::string response_data;
+
+    hInternet = InternetOpen("Updater", INTERNET_OPEN_TYPE_DIRECT, NULL, NULL, 0);
+    if (hInternet == NULL) {
+        std::cerr << "[-] Error initializing Updater." << std::endl;
+        return "";
+    }
+
+    hConnect = InternetOpenUrlA(hInternet, url.c_str(), NULL, 0, INTERNET_FLAG_RELOAD, 0);
+    if (hConnect == NULL) {
+        std::cerr << "[-] Error opening URL: " << url << std::endl;
+        InternetCloseHandle(hInternet);
+        return "";
+    }
+
+    while (InternetReadFile(hConnect, buffer, sizeof(buffer), &bytesRead) && bytesRead > 0) {
+        response_data.append(buffer, bytesRead);
+    }
+
+    InternetCloseHandle(hConnect);
+    InternetCloseHandle(hInternet);
+
+    return response_data;
+}
+
+bool save_to_file(const std::string& data, const std::string& file_path) {
+    try {
+        fs::create_directories(fs::path(file_path).parent_path());
+        std::ofstream file(file_path, std::ios::binary);
+
+        if (file.is_open()) {
+            file.write(data.c_str(), data.size());
+            file.close();
+            return true;
+        }
+        else {
+            Log("[-]", "Error opening file for writing: " + file_path, RED);
+            return false;
+        }
+    }
+    catch (const std::exception& e) {
+        Log("[-]", "Error saving offsets to" + file_path + ": " + e.what(), RED);
+        return false;
+    }
+}
+
+bool utils::updater::updateOffsets()
+{
+    const std::string offsets_url = "https://raw.githubusercontent.com/a2x/cs2-dumper/main/output/offsets.json";
+    const std::string client_url = "https://raw.githubusercontent.com/a2x/cs2-dumper/main/output/client_dll.json";
+    const std::string offsets_path = "./offsets/offsets.json";
+    const std::string client_path = "./offsets/client.dll.json";
+
+    std::string offsets_data = fetch_raw_data(offsets_url);
+    std::string client_data = fetch_raw_data(client_url);
+
+    if (!offsets_data.empty() && !client_data.empty()) {
+        if (save_to_file(offsets_data, offsets_path) && save_to_file(client_data, client_path))
+        {
+            Log("[+]", "Offsets updated successfully", GREEN);
+            Sleep(2500);
+            return true;
+        }
+        else {
+            Sleep(3000);
+            return false;
+        }
+    }
+    else {
+        Log("[-]", "Error while saving offsets", RED);
+        Sleep(3000);
+        return false;
+    }
+}

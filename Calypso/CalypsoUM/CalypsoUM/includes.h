@@ -7,6 +7,7 @@
 #pragma comment(lib, "ntdll.lib")
 #pragma comment (lib, "Setupapi.lib")
 #pragma comment(lib, "winmm.lib")
+#pragma comment(lib, "wininet.lib")
 
 #include <windows.h>
 #include <sstream>
@@ -24,3 +25,4 @@
 #include <unordered_map>
 #include <map>
 #include <filesystem>
+#include <wininet.h>

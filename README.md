@@ -20,6 +20,10 @@
 - Automatic fetching of latest offsets from [CS2 Dumper Repo](https://github.com/a2x/cs2-dumper/tree/main/output)
 #### Arduino Support
 - Cheat be used with or without Arduino.
+### Automatic USB Boot System
+- Cheat will automatically boot the usb you are running your cheat from.
+### Automatic Driver Download
+- Cheat will automatically download all needed files to run.
 
 ## Default Key Binds
 
@@ -27,17 +31,19 @@
  
  **Triggerbot**: `Mouse 5`
 
-## Usage
+## Usage for building from source
 
 1. Format USB drive to FAT32
 
-2. Open `build.bat` inside Athena folder
+2. Run `build.bat` inside Athena folder
 
-3. Copy all contents of the USB folder to your formated USB Drive
+3. Upload `AthenaEFI.efi`, `bootx64.efi`, `Startup.nsh`, `beep.wav` to [Catbox.moe](https://catbox.moe/)
 
-4. Copy `AthenaUM.exe` to usb drive
+4. Replace the file urls in `main.cpp` with the new ones
 
-5. Start `AthenaUM.exe`
+5. Copy `AthenaUM.exe` to usb drive
+
+6. Start `AthenaUM.exe`
 
 
 Check out [USAGE.md](.github/docs/USAGE.md) for detailed instruction.

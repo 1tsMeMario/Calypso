@@ -31,7 +31,19 @@
  
  **Triggerbot**: `Mouse 5`
 
-## Usage for building from source
+## Normal usage (assuming nothing changed)
+
+1. Format USB drive to FAT32
+
+2. Run `build.bat` inside Athena folder
+
+3. Copy `AthenaUM.exe` to usb drive
+
+4. Start `AthenaUM.exe`
+
+
+
+## Usage (modified source)
 
 1. Format USB drive to FAT32
 

@@ -17,7 +17,7 @@
 #### Config System
 - Cheat uses self-sufficient config system. Dont have config file? Cheat will create it itself.
 #### Offsets Updater
-- Offsets fetcher in python that allow to autoupdating offsets.
+- Automatic fetching of latest offsets from [CS2 Dumper Repo](https://github.com/a2x/cs2-dumper/tree/main/output)
 #### Arduino Support
 - Cheat be used with or without Arduino.
 
@@ -28,19 +28,16 @@
  **Triggerbot**: `Mouse 5`
 
 ## Usage
-1. Download [UEFI-Shell](https://github.com/tianocore/edk2-archive/raw/master/ShellBinPkg/UefiShell/X64/Shell.efi) and rename from `Shell.efi` to `bootx64.efi`
-   
-2. Open downloaded Athena, go to USB folder, create folders `EFI/Boot/` and paste renamed UEFI-Shell inside (`USB/EFI/Boot/bootx64.efi`)
 
-3. Format USB drive to FAT32
+1. Format USB drive to FAT32
 
-4. Open `build.bat` inside Athena folder
+2. Open `build.bat` inside Athena folder
 
-5. Copy all contents of the USB folder to your formated USB Drive
+3. Copy all contents of the USB folder to your formated USB Drive
 
-5. Boot from the USB drive
+4. Copy `AthenaUM.exe` to usb drive
 
-9. After that open `update_offsets.py` and start `AthenaUM.exe`
+5. Start `AthenaUM.exe`
 
 
 Check out [USAGE.md](.github/docs/USAGE.md) for detailed instruction.

@@ -1,6 +1,6 @@
 <p align="center">
-    <img src=".github/images/calypso.jpg" alt="Calypso" width="400" />
-    <h3 align="center">Calypso</h3>
+    <img src=".github/images/Athena.jpg" alt="Athena" width="400" />
+    <h3 align="center">Athena</h3>
     <p align="center"><i>CS2 EFI cheat with Arduino Support.</i></p>
 </p>
 
@@ -30,26 +30,26 @@
 
 ## Usage
 
-Download Calypso from [Releases](https://github.com/3a1/CS2-Calypso/releases/latest) and follow these steps:
+Download Athena from [Releases](https://github.com/3a1/CS2-Athena/releases/latest) and follow these steps:
 
 1. Download [UEFI-Shell](https://github.com/tianocore/edk2-archive/raw/master/ShellBinPkg/UefiShell/X64/Shell.efi) and rename from `Shell.efi` to `bootx64.efi`
    
-2. Open downloaded Calypso, go to USB folder, create folders `EFI/Boot/` and paste renamed UEFI-Shell inside (`USB/EFI/Boot/bootx64.efi`)
+2. Open downloaded Athena, go to USB folder, create folders `EFI/Boot/` and paste renamed UEFI-Shell inside (`USB/EFI/Boot/bootx64.efi`)
 
 3. Format USB drive to FAT32
 
-4. Open `build.bat` inside Calypso folder
+4. Open `build.bat` inside Athena folder
 
 5. Copy all contents of the USB folder to your formated USB Drive
 
 5. Boot from the USB drive
 
-9. After that open `update_offsets.py` and start `CalypsoUM.exe`
+9. After that open `update_offsets.py` and start `AthenaUM.exe`
 
 
 Check out [USAGE.md](.github/docs/USAGE.md) for detailed instruction.
 
-<img src=".github/images/calypso_cli.png" alt="Calypso CLI" width="600"/>
+<img src=".github/images/Athena_cli.png" alt="Athena CLI" width="600"/>
 
 
 ## Showcase & Usage

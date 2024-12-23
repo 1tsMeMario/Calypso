@@ -2,4 +2,4 @@
 /.gitattributes export-ignore
 README.md export-ignore
 
-Calypso/CalypsoEFI/gnu-efi/** linguist-vendored
+Athena/AthenaEFI/gnu-efi/** linguist-vendored

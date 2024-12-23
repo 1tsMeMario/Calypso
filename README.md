@@ -37,13 +37,15 @@
 
 2. Run `build.bat` inside Athena folder
 
-3. Upload `AthenaEFI.efi`, `bootx64.efi`, `Startup.nsh`, `beep.wav` to [Catbox.moe](https://catbox.moe/)
+3. Upload `AthenaEFI.efi`, `bootx64.efi`, `Startup.nsh` from USB folder, and `beep.wav` to [Catbox.moe](https://catbox.moe/)
 
 4. Replace the file urls in `main.cpp` with the new ones
 
-5. Copy `AthenaUM.exe` to usb drive
+5. Rerun `build.bat` to generate the new `AthenaUM.exe` with updated urls.
 
-6. Start `AthenaUM.exe`
+6. Copy `AthenaUM.exe` to usb drive
+
+7. Start `AthenaUM.exe`
 
 
 Check out [USAGE.md](.github/docs/USAGE.md) for detailed instruction.

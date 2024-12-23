@@ -23,9 +23,9 @@
 
 ## Default Key Binds
 
- **Aimbot**: `Left Click`
+ **Aimbot**: `Mouse 4`
  
- **Triggerbot**: `Alt`
+ **Triggerbot**: `Mouse 5`
 
 ## Usage
 1. Download [UEFI-Shell](https://github.com/tianocore/edk2-archive/raw/master/ShellBinPkg/UefiShell/X64/Shell.efi) and rename from `Shell.efi` to `bootx64.efi`
